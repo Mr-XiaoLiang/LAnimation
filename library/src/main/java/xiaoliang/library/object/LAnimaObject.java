@@ -9,6 +9,7 @@ import android.animation.ObjectAnimator;
 public class LAnimaObject {
 
 
+
     private void start(){
 //        ObjectAnimator objectAnimator = ObjectAnimator.ofObject();
     }
