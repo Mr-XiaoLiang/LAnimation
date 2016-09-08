@@ -1,5 +1,7 @@
 package xiaoliang.library.adapter;
 
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import xiaoliang.library.exception.AdapterException;
 public class SimpleAdapter implements BaseAdapter<LDefaultBean> {
 
     private ArrayList<LDefaultBean> beans;
+    private TypeEvaluator evaluator;
 
     @Override
     public int getCount() {
@@ -23,7 +26,7 @@ public class SimpleAdapter implements BaseAdapter<LDefaultBean> {
 
     @Override
     public int getType(int index) {
-        return beans.get(index).animaType;
+        return beans.get(index).getAnimaType();
     }
 
     @Override
@@ -33,7 +36,6 @@ public class SimpleAdapter implements BaseAdapter<LDefaultBean> {
 
     @Override
     public void runAnimation(int index, View view, LDefaultBean bean) {
-
     }
 
     @Override
