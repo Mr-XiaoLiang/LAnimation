@@ -7,7 +7,7 @@ package xiaoliang.library.bean;
  * 简化代码的复杂程度
  * 某种程度上借鉴了其他成名框架.如RxJava
  */
-public abstract class DefaultBeanBuilder implements BeanBuilder{
+public abstract class DefaultBeanBuilder implements BeanBuilder<LDefaultBean>{
 
     private LDefaultBean defaultBean;
     private LDefaultBean.Build build;
@@ -29,7 +29,7 @@ public abstract class DefaultBeanBuilder implements BeanBuilder{
         defaultBean = new LDefaultBean(build);
     }
     @Override
-    public LAnimaBean getBean(){
+    public LDefaultBean getBean(){
         return defaultBean;
     }
 

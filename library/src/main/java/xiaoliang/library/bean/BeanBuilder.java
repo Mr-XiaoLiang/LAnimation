@@ -4,11 +4,11 @@ package xiaoliang.library.bean;
  * Created by liuj on 2016/9/9.
  * 动作构造器
  */
-public interface BeanBuilder {
+public interface BeanBuilder<T extends LAnimaBean> {
     /**
      * 获取动作
      * @return
      */
-    public LAnimaBean getBean();
+    public T getBean();
 
 }

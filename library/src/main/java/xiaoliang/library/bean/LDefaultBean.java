@@ -100,6 +100,16 @@ public class LDefaultBean extends LAnimaBean {
             return this;
         }
 
+        /**
+         * 二次曲线连接
+         * @param x 终点坐标X(相对起点坐标)
+         * @param y 终点坐标Y(相对起点坐标)
+         * @param x1 起点坐标辅助点X(相对起点坐标)
+         * @param y1 起点坐标辅助点Y(相对起点坐标)
+         * @param x2 终点坐标辅助点X(相对于终点坐标)
+         * @param y2 终点坐标辅助点Y(相对于终点坐标)
+         * @return
+         */
         public Build curveTo(int x,int y,int x1,int y1,int x2,int y2){
             this.x = x;this.y = y;
             this.x1 = x1;this.y1 = y1;

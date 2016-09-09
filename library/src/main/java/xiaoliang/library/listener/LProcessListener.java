@@ -1,34 +1,53 @@
 package xiaoliang.library.listener;
 
-import xiaoliang.library.bean.LAnimaBean;
-import xiaoliang.library.object.LAnimaObject;
+import xiaoliang.library.exception.AnimationException;
+import xiaoliang.library.object.LAnima;
 
 /**
  * Created by liuj on 2016/8/31.
  * 过程监听器
+ * 我决定不定义为接口
+ * 定义为类的话,可以根据自己的需要来进行重写
  */
-public interface LProcessListener {
+public class LProcessListener<T extends LAnima> {
+    /**
+     * 动画准备
+     * @param name 准备任务的名字
+     * @param what 准备任务的编号
+     * @param obj 准备任务对象
+     */
+    public void onPrepare(String name,int what,T obj){}
+
     /**
      * 动画开始
      * @param name 开始任务的名字
      * @param what 开始任务的编号
      * @param obj 开始任务对象
      */
-    void onStart(String name,int what,LAnimaObject obj);
+    public void onStart(String name,int what,T obj){}
 
     /**
-     * 执行下一个动作
-     * @param name 动作名
-     * @param what 动作编号
-     * @param bean 动作对象
+     * 单任务重复执行
+     * @param name 任务名
+     * @param what 任务编号
+     * @param obj 任务对象
      */
-    void onNext(String name,int what,LAnimaBean bean);
+    public void onRepeat(String name,int what,T obj){}
+
+    /**
+     * 当任务被取消
+     * @param name 任务名
+     * @param what 任务编号
+     * @param obj 任务对象
+     */
+    public void onCancel(String name,int what,T obj){}
 
     /**
      * 发生异常
      * @param e 异常对象
      */
-    void onError(Exception e);
+    public void onError(AnimationException e) {
+    }
 
     /**
      * 任务结束
@@ -36,5 +55,5 @@ public interface LProcessListener {
      * @param what 任务编号
      * @param obj 任务对象
      */
-   void  onConclude(String name,int what,LAnimaObject obj);
+    public void  onConclude(String name,int what,T obj){}
 }
