@@ -9,6 +9,7 @@ import android.graphics.Color;
 public class LDefaultBean extends LAnimaBean {
 
     public final AnimaType animaType;//动画类型
+    public final SpeedType speedType;//速度变化类型
     public final boolean beyond;// 是否忽略布局限制
     public final long animaTime;//动画执行时间
     public final int x;// 横向坐标增量
@@ -19,7 +20,11 @@ public class LDefaultBean extends LAnimaBean {
     public final float rotate;//旋转角度
     public final String name;// 关键帧名称
     public final int what;//关键帧标签
-    public final Object tag;//标签
+    public Object tag;//标签
+    public final int x1;// 横向坐标辅助增量
+    public final int y1;//纵向坐标辅助增量
+    public final int x2;// 横向坐标辅助增量
+    public final int y2;//纵向坐标辅助增量
 
     public LDefaultBean(Build build) {
         this.animaTime = build.animaTime;
@@ -33,63 +38,33 @@ public class LDefaultBean extends LAnimaBean {
         this.what = build.what;
         this.x = build.x;
         this.y = build.y;
+        this.x1 = build.x1;
+        this.y1 = build.y1;
+        this.x2 = build.x2;
+        this.y2 = build.y2;
         this.width = build.width;
+        this.speedType = build.speedType;
     }
 
     public int getAnimaType() {
         return animaType.value;
     }
 
-    public boolean isBeyond() {
-        return beyond;
-    }
-
-    public long getAnimaTime() {
-        return animaTime;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public float getRotate() {
-        return rotate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getWhat() {
-        return what;
-    }
-
-    public Object getTag() {
-        return tag;
+    public int getSpeedType() {
+        return speedType.value;
     }
 
     public static class Build {
         private AnimaType animaType = AnimaType.LINE;//动画类型
+        private SpeedType speedType = SpeedType.UNIFORM;//速度变化类型
         private boolean beyond = false;// 是否忽略布局限制
         private long animaTime = 300;//动画执行时间
         private int x = 0;// 横向坐标增量
         private int y = 0;//纵向坐标增量
+        private int x1 = 0;// 横向坐标辅助增量
+        private int y1 = 0;//纵向坐标辅助增量
+        private int x2 = 0;// 横向坐标辅助增量
+        private int y2 = 0;//纵向坐标辅助增量
         private int width = 0;//宽度增量
         private int height = 0;// 高度增量
         private int color = Color.WHITE;// 目标颜色
@@ -113,13 +88,23 @@ public class LDefaultBean extends LAnimaBean {
             return this;
         }
 
-        public Build setX(int x) {
-            this.x = x;
+        public Build moveTo(int x,int y) {
+            this.x = x;this.y = y;
+            setAnimaType(AnimaType.MOVE);
             return this;
         }
 
-        public Build setY(int y) {
-            this.y = y;
+        public Build lineTo(int x,int y){
+            this.x = x;this.y = y;
+            setAnimaType(AnimaType.LINE);
+            return this;
+        }
+
+        public Build curveTo(int x,int y,int x1,int y1,int x2,int y2){
+            this.x = x;this.y = y;
+            this.x1 = x1;this.y1 = y1;
+            this.x2 = x2;this.y2 = y2;
+            setAnimaType(AnimaType.CURVE);
             return this;
         }
 
@@ -155,6 +140,15 @@ public class LDefaultBean extends LAnimaBean {
 
         public Build setTag(Object tag) {
             this.tag = tag;
+            return this;
+        }
+
+        public SpeedType getSpeedType() {
+            return speedType;
+        }
+
+        public Build setSpeedType(SpeedType speedType) {
+            this.speedType = speedType;
             return this;
         }
     }
