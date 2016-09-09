@@ -1,13 +1,13 @@
 package xiaoliang.library.bean;
 
 /**
- * Created by Administrator on 2016/9/9.
+ * Created by liuj on 2016/9/9.
  * 默认的动作构造器
  * 本动作构造器是对动作的封装,达到动作步骤化的目的,
  * 简化代码的复杂程度
  * 某种程度上借鉴了其他成名框架.如RxJava
  */
-public abstract class DefaultBeanBuilder implements BeanBuilder {
+public abstract class DefaultBeanBuilder implements BeanBuilder{
 
     private LDefaultBean defaultBean;
     private LDefaultBean.Build build;
@@ -27,6 +27,10 @@ public abstract class DefaultBeanBuilder implements BeanBuilder {
 
     public void build(){
         defaultBean = new LDefaultBean(build);
+    }
+    @Override
+    public LAnimaBean getBean(){
+        return defaultBean;
     }
 
 }

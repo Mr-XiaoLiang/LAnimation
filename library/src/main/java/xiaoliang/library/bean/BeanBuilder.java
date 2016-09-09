@@ -5,6 +5,10 @@ package xiaoliang.library.bean;
  * 动作构造器
  */
 public interface BeanBuilder {
-
+    /**
+     * 获取动作
+     * @return
+     */
+    public LAnimaBean getBean();
 
 }
