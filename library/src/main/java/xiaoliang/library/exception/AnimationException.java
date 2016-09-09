@@ -4,16 +4,16 @@ import xiaoliang.library.adapter.BaseAdapter;
 
 /**
  * Created by liuj on 2016/8/31.
- * 适配器异常
+ * 动画异常异常
  */
-public class AdapterException extends RuntimeException {
+public class AnimationException extends RuntimeException {
     private Class<? extends BaseAdapter> cla;
 
-    public AdapterException(String msg) {
+    public AnimationException(String msg) {
         super(msg);
     }
 
-    public AdapterException(String msg, Class<? extends BaseAdapter> cla) {
+    public AnimationException(String msg, Class<? extends BaseAdapter> cla) {
         this(msg);
         this.cla = cla;
     }

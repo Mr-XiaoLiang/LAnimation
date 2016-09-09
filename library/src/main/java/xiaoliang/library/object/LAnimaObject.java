@@ -1,6 +1,12 @@
 package xiaoliang.library.object;
 
-import android.animation.ObjectAnimator;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+
+import java.util.ArrayList;
+
+import xiaoliang.library.bean.LAnimaBean;
 
 /**
  * Created by LiuJ on 2016/8/31.
@@ -8,10 +14,12 @@ import android.animation.ObjectAnimator;
  */
 public class LAnimaObject {
 
-
+    private ArrayList<LAnimaBean> animaBeens;
+    private View view;
 
     private void start(){
 //        ObjectAnimator objectAnimator = ObjectAnimator.ofObject();
+//        view.setAnimation();
     }
 
 }

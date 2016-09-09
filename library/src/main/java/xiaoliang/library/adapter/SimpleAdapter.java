@@ -6,13 +6,13 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import xiaoliang.library.bean.AnimaType;
 import xiaoliang.library.bean.LDefaultBean;
-import xiaoliang.library.exception.AdapterException;
 
 /**
  * Created by liuj on 2016/8/31.
  * 一个预设的简单的动画适配器
+ * Update by liuj on 2016/9/8
+ * 基于某些情况,暂时放弃adapter动画管理模式
  */
 public class SimpleAdapter implements BaseAdapter<LDefaultBean> {
 
@@ -36,6 +36,8 @@ public class SimpleAdapter implements BaseAdapter<LDefaultBean> {
 
     @Override
     public void runAnimation(int index, View view, LDefaultBean bean) {
+        ObjectAnimator objectAnimator;
+
     }
 
     @Override
