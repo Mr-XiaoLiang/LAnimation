@@ -24,7 +24,7 @@ public abstract class DefaultBeanBuilder implements BeanBuilder<LDefaultBean>{
      * @param build
      */
     public abstract void make(LDefaultBean.Build build);
-
+    @Override
     public void build(){
         defaultBean = new LDefaultBean(build);
     }

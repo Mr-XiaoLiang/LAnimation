@@ -16,6 +16,11 @@ public class AnimationException extends RuntimeException {
         this.cla = cla;
     }
 
+    public AnimationException(String msg, Object cla) {
+        this(msg);
+        this.cla = cla.getClass();
+    }
+
     public Class getExceptionClass(){
         return cla;
     }

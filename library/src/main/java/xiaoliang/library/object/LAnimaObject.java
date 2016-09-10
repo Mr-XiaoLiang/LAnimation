@@ -2,6 +2,8 @@ package xiaoliang.library.object;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.util.Log;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -11,6 +13,7 @@ import xiaoliang.library.evaluator.LDefaultEvaluator;
 import xiaoliang.library.evaluator.LEvaluator;
 import xiaoliang.library.exception.AnimationException;
 import xiaoliang.library.listener.LProcessListener;
+import xiaoliang.library.listener.LProcessListenerInterface;
 import xiaoliang.library.practitioners.LDefaultPractitioners;
 import xiaoliang.library.practitioners.LPractitioners;
 
@@ -27,28 +30,46 @@ public class LAnimaObject extends LAnima {
     private LEvaluator evaluator;
     private LPractitioners practitioners;
     private long duration = 300;
-    private LProcessListener processListener;
+    private LProcessListenerInterface processListener;
     private ObjectAnimator objectAnimator;
+    private boolean isRunning = false;
 
     @Override
     public void start(){
-        try{
+        if(isRunning){
+            isRunning = true;
+            return;
+        }
+//        try{
             if(objectAnimator==null){
                 if (processListener!=null){
                     processListener.onPrepare(name,what,this);
                 }
                 if(animaBens.size()<2)//如果小于2个坐标,则添加一个当前坐标的点
                     animaBens.add(0,new LAnimaBean());
-                objectAnimator = ObjectAnimator.ofObject(this,"animation",evaluator,animaBens);
+                if(practitioners==null){
+                    if (processListener!=null)
+                        processListener.onError(name,what,LAnimaObject.this,new AnimationException("LPractitioners is null.(执行者不存在,请为动画任务分配执行者)",LAnimaObject.class));
+                    else
+                        throw new AnimationException("LPractitioners is null.(执行者不存在,请为动画任务分配执行者)",LAnimaObject.class);
+                }
+                Log.d("LAnimaObject","准备创建ObjectAnimator");
+                objectAnimator = ObjectAnimator.ofObject(LAnimaObject.this,"animation",evaluator,animaBens.toArray());
+                Log.d("LAnimaObject","创建ObjectAnimator完毕");
                 objectAnimator.setDuration(duration);
+                Log.d("LAnimaObject","设置ObjectAnimator时间");
                 objectAnimator.addListener(new LAnimaListener());
+                Log.d("LAnimaObject","设置ObjectAnimator监听器");
             }
             objectAnimator.start();
-        }catch (Exception e){
-            if (processListener!=null){
-                processListener.onError(new AnimationException(getClass().getName()+"--->"+e.getMessage()));
-            }
-        }
+            Log.d("LAnimaObject","ObjectAnimator开始执行");
+//        }catch (Exception e){
+//            if (processListener!=null){
+//                processListener.onError(name,what,LAnimaObject.this,new AnimationException("LAnimaObject--->"+e.getMessage()));
+//            }else{
+//                throw new AnimationException("LAnimaObject--->"+e.getMessage());
+//            }
+//        }
     }
 
     public long getDuration() {
@@ -141,12 +162,14 @@ public class LAnimaObject extends LAnima {
 
         @Override
         public void onAnimationEnd(Animator animation) {
+            isRunning = false;
             if(processListener!=null)
                 processListener.onConclude(name,what,LAnimaObject.this);
         }
 
         @Override
         public void onAnimationCancel(Animator animation) {
+            isRunning = false;
             if(processListener!=null)
                 processListener.onCancel(name,what,LAnimaObject.this);
         }
@@ -158,4 +181,11 @@ public class LAnimaObject extends LAnima {
         }
     }
 
+    public LProcessListenerInterface getProcessListener() {
+        return processListener;
+    }
+
+    public void setProcessListener(LProcessListenerInterface processListener) {
+        this.processListener = processListener;
+    }
 }

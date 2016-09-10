@@ -1,7 +1,8 @@
 package xiaoliang.library.evaluator;
 
-import android.app.Dialog;
+import android.graphics.Color;
 
+import xiaoliang.library.algorithm.Curve;
 import xiaoliang.library.bean.LDefaultBean;
 import xiaoliang.library.bean.SpeedType;
 
@@ -15,27 +16,48 @@ public class LDefaultEvaluator implements LEvaluator<LDefaultBean> {
 
     private float minSpeed = 0.5f;
     private float maxSpeed = 1.5f;
+    private int a = 0,r = 0,g = 0,b = 0;
+    private int x = 0,y = 0;
+    private float width = 0,height = 0;
+    private float rotate= 0;
 
     @Override
     public LDefaultBean evaluate(float fraction, LDefaultBean startValue, LDefaultBean endValue) {
         LDefaultBean.Build build = new LDefaultBean.Build();
+        if(endValue.getProgressListener()!=null)
+            endValue.getProgressListener().onProgressChange(fraction,endValue.what);
         fraction = getFraction(fraction,endValue.speedType);
-        int x = 0,y = 0;
+        //位置变化
         switch (endValue.animaType){
             case CURVE:
-
+                x = (int) Curve.thirdOrder(fraction,startValue.x,endValue.x1,endValue.x,endValue.x2);
+                y = (int) Curve.thirdOrder(fraction,startValue.y,endValue.y1,endValue.y,endValue.y2);
                 break;
             case MOVE:
                 x = endValue.x;
                 y = endValue.y;
                 break;
             case LINE:
-                x = (int) (endValue.x*fraction);
-                y = (int) (endValue.y*fraction);
+                x = (int) ((endValue.x-startValue.x)*fraction);
+                y = (int) ((endValue.y-startValue.y)*fraction);
                 break;
         }
         build.moveTo(x,y);
-        return null;
+        //颜色变化
+        a = (int) ((Color.alpha(startValue.color)-Color.alpha(endValue.color))*fraction+Color.alpha(startValue.color));
+        r = (int) ((Color.red(startValue.color)-Color.red(endValue.color))*fraction+Color.red(startValue.color));
+        g = (int) ((Color.green(startValue.color)-Color.green(endValue.color))*fraction+Color.green(startValue.color));
+        b = (int) ((Color.blue(startValue.color)-Color.blue(endValue.color))*fraction+Color.blue(startValue.color));
+        build.setColor(Color.argb(a,r,g,b));
+        //尺寸变化
+        width = (startValue.width-endValue.width)*fraction+startValue.width;
+        height = (startValue.height-endValue.height)*fraction+startValue.height;
+        build.setWidth(width);
+        build.setHeight(height);
+        //旋转角度
+        rotate = (startValue.rotate-endValue.rotate)*fraction+startValue.rotate;
+        build.setRotate(rotate);
+        return new LDefaultBean(build);
     }
 
     /**

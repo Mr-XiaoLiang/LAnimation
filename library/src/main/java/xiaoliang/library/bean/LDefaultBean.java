@@ -14,8 +14,8 @@ public class LDefaultBean extends LAnimaBean {
     public final long animaTime;//动画执行时间
     public final int x;// 横向坐标增量
     public final int y;//纵向坐标增量
-    public final int width;//宽度增量
-    public final int height;// 高度增量
+    public final float width;//宽度比例
+    public final float height;// 高度增量
     public final int color;// 目标颜色
     public final float rotate;//旋转角度
     public final String name;// 关键帧名称
@@ -57,7 +57,7 @@ public class LDefaultBean extends LAnimaBean {
     public static class Build {
         private AnimaType animaType = AnimaType.LINE;//动画类型
         private SpeedType speedType = SpeedType.UNIFORM;//速度变化类型
-        private boolean beyond = false;// 是否忽略布局限制
+        private boolean beyond = false;// 是否忽略布局限制,本参数暂时不可用
         private long animaTime = 300;//动画执行时间,本方法暂时不可用
         private int x = 0;// 横向坐标增量
         private int y = 0;//纵向坐标增量
@@ -65,8 +65,8 @@ public class LDefaultBean extends LAnimaBean {
         private int y1 = 0;//纵向坐标辅助增量
         private int x2 = 0;// 横向坐标辅助增量
         private int y2 = 0;//纵向坐标辅助增量
-        private int width = 0;//宽度增量
-        private int height = 0;// 高度增量
+        private float width = 0;//宽度比例
+        private float height = 0;// 高度比例
         private int color = Color.WHITE;// 目标颜色
         private float rotate= 0;//旋转角度
         private String name = getClass().toString();// 关键帧名称
@@ -78,6 +78,11 @@ public class LDefaultBean extends LAnimaBean {
             return this;
         }
 
+        /**
+         * 本方法暂时不可用
+         * @param beyond
+         * @return
+         */
         public Build setBeyond(boolean beyond) {
             this.beyond = beyond;
             return this;
@@ -123,12 +128,12 @@ public class LDefaultBean extends LAnimaBean {
             return this;
         }
 
-        public Build setWidth(int width) {
+        public Build setWidth(float width) {
             this.width = width;
             return this;
         }
 
-        public Build setHeight(int height) {
+        public Build setHeight(float height) {
             this.height = height;
             return this;
         }

@@ -2,23 +2,19 @@ package xiaoliang.library.listener;
 
 import xiaoliang.library.exception.AnimationException;
 import xiaoliang.library.object.LAnima;
-import xiaoliang.library.object.LAnimaObject;
 
 /**
- * Created by liuj on 2016/8/31.
- * 过程监听器
- * 我决定不定义为接口
- * 定义为类的话,可以根据自己的需要来进行重写
+ * Created by liuj on 2016/9/10.
+ * 进度监听器的接口
  */
-public class LProcessListener implements LProcessListenerInterface<LAnima> {
+public interface LProcessListenerInterface<T extends LAnima> {
     /**
      * 动画准备
      * @param name 准备任务的名字
      * @param what 准备任务的编号
      * @param obj 准备任务对象
      */
-    @Override
-    public void onPrepare(String name,int what,LAnima obj){}
+    void onPrepare(String name,int what,T obj);
 
     /**
      * 动画开始
@@ -26,8 +22,7 @@ public class LProcessListener implements LProcessListenerInterface<LAnima> {
      * @param what 开始任务的编号
      * @param obj 开始任务对象
      */
-    @Override
-    public void onStart(String name,int what,LAnima obj){}
+    void onStart(String name,int what,T obj);
 
     /**
      * 单任务重复执行
@@ -35,8 +30,7 @@ public class LProcessListener implements LProcessListenerInterface<LAnima> {
      * @param what 任务编号
      * @param obj 任务对象
      */
-    @Override
-    public void onRepeat(String name,int what,LAnima obj){}
+    void onRepeat(String name,int what,T obj);
 
     /**
      * 当任务被取消
@@ -44,16 +38,13 @@ public class LProcessListener implements LProcessListenerInterface<LAnima> {
      * @param what 任务编号
      * @param obj 任务对象
      */
-    @Override
-    public void onCancel(String name,int what,LAnima obj){}
+    void onCancel(String name,int what,T obj);
 
     /**
      * 发生异常
      * @param e 异常对象
      */
-    @Override
-    public void onError(String name,int what,LAnima obj,AnimationException e) {
-    }
+    void onError(String name,int what,T obj,AnimationException e);
 
     /**
      * 任务结束
@@ -61,6 +52,5 @@ public class LProcessListener implements LProcessListenerInterface<LAnima> {
      * @param what 任务编号
      * @param obj 任务对象
      */
-    @Override
-    public void  onConclude(String name,int what,LAnima obj){}
+    void  onConclude(String name,int what,T obj);
 }

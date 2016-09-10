@@ -1,10 +1,13 @@
 package xiaoliang.lanimation;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import xiaoliang.lanimation.View.CurveView;
 import xiaoliang.library.bean.AnimaType;
@@ -14,12 +17,12 @@ import xiaoliang.library.bean.SpeedType;
 import xiaoliang.library.object.LAnima;
 import xiaoliang.library.object.LAnimaObject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(new CurveView(this));
+        setContentView(R.layout.activity_main);
     }
 
     private void initAnimation(){
@@ -47,4 +50,15 @@ public class MainActivity extends AppCompatActivity {
         lAnimaObject.start();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.test_for_translation:
+                startActivity(new Intent(this,TestForTranslation.class));
+                break;
+            case R.id.test_for_rotate:
+                startActivity(new Intent(this,TestForRotationActivity.class));
+                break;
+        }
+    }
 }

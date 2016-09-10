@@ -11,4 +11,6 @@ public interface BeanBuilder<T extends LAnimaBean> {
      */
     public T getBean();
 
+    void build();
+
 }

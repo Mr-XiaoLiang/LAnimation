@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context="xiaoliang.lanimation.TestForRotationActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/rotate_view"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="#f00" />
+
+        <Button
+            android:id="@+id/rotate_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:onClick="onClick"
+            android:padding="20dp"
+            android:text="手动旋转30度" />
+
+        <Button
+            android:id="@+id/rotate_btn2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:padding="20dp"
+            android:text="动画:减速顺时针旋转一圈" />
+
+        <Button
+            android:id="@+id/rotate_btn3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:padding="20dp"
+            android:text="动画:加速逆时针旋转一圈" />
+        <TextView
+            android:id="@+id/rotate_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+    </LinearLayout>
+</FrameLayout>
