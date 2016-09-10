@@ -37,6 +37,8 @@ public class LAnimaObject extends LAnima {
                 if (processListener!=null){
                     processListener.onPrepare(name,what,this);
                 }
+                if(animaBens.size()<2)//如果小于2个坐标,则添加一个当前坐标的点
+                    animaBens.add(0,new LAnimaBean());
                 objectAnimator = ObjectAnimator.ofObject(this,"animation",evaluator,animaBens);
                 objectAnimator.setDuration(duration);
                 objectAnimator.addListener(new LAnimaListener());
@@ -117,7 +119,7 @@ public class LAnimaObject extends LAnima {
      */
     @Override
     public void add(BeanBuilder builder){
-        animaBens.add(builder.getBean());
+        add(builder.getBean());
     }
 
     /**

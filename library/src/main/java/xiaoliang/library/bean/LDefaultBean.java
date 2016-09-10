@@ -58,7 +58,7 @@ public class LDefaultBean extends LAnimaBean {
         private AnimaType animaType = AnimaType.LINE;//动画类型
         private SpeedType speedType = SpeedType.UNIFORM;//速度变化类型
         private boolean beyond = false;// 是否忽略布局限制
-        private long animaTime = 300;//动画执行时间
+        private long animaTime = 300;//动画执行时间,本方法暂时不可用
         private int x = 0;// 横向坐标增量
         private int y = 0;//纵向坐标增量
         private int x1 = 0;// 横向坐标辅助增量
@@ -83,6 +83,11 @@ public class LDefaultBean extends LAnimaBean {
             return this;
         }
 
+        /**
+         * 本方法暂时不可用
+         * @param animaTime 动画执行时间
+         * @return 当前
+         */
         public Build setAnimaTime(long animaTime) {
             this.animaTime = animaTime;
             return this;
@@ -162,4 +167,9 @@ public class LDefaultBean extends LAnimaBean {
             return this;
         }
     }
+
+    public LDefaultBean(){
+        this(new Build());
+    }
+
 }

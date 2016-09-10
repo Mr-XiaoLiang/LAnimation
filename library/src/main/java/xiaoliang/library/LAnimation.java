@@ -1,5 +1,6 @@
 package xiaoliang.library;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import xiaoliang.library.object.LAnimaObject;
@@ -22,8 +23,8 @@ public class LAnimation {
      * @param key 名字(注意,名字重复时,会覆盖掉原先的对象)
      * @param value 值
      */
-    public static void put(String key,Object value){
-        map.put(key,value);
+    public static Object put(String key,Object value){
+        return map.put(key,value);
     }
 
     /**
