@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initAnimation(){
-        LAnimaObject lAnimaObject = LAnimaObject.create(new View(this));
+        LAnimaObject lAnimaObject = new LAnimaObject();
+        lAnimaObject.create(new View(this));
         lAnimaObject.add(new DefaultBeanBuilder() {
             @Override
             public void make(LDefaultBean.Build build) {

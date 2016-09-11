@@ -2,13 +2,18 @@ package xiaoliang.library.object;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import java.util.ArrayList;
 
 import xiaoliang.library.bean.BeanBuilder;
+import xiaoliang.library.bean.DefaultBeanBuilder;
 import xiaoliang.library.bean.LAnimaBean;
+import xiaoliang.library.bean.LDefaultBean;
+import xiaoliang.library.bean.RepeatType;
 import xiaoliang.library.evaluator.LDefaultEvaluator;
 import xiaoliang.library.evaluator.LEvaluator;
 import xiaoliang.library.exception.AnimationException;
@@ -23,54 +28,61 @@ import xiaoliang.library.practitioners.LPractitioners;
  * 这里负责管理,调度动画的组件
  * 将动作,计算器,被执行者,执行者,监听器,动画处理器进行调度
  */
-public class LAnimaObject extends LAnima {
+public class LAnimaObject<T extends LAnimaBean,V> extends LAnima<T> {
 
-    private ArrayList<LAnimaBean> animaBens;
-    private Object view;
+    private ArrayList<T> animaBens;
+    private V view;
     private LEvaluator evaluator;
-    private LPractitioners practitioners;
+    private LPractitioners<T,V> practitioners;
     private long duration = 300;
     private LProcessListenerInterface processListener;
     private ObjectAnimator objectAnimator;
     private boolean isRunning = false;
+    private RepeatType repeatType = RepeatType.RESTART;
+    private int repeatCount = 0;
 
     @Override
     public void start(){
         if(isRunning){
-            isRunning = true;
+            Log.d("LAnimaObject","isRunning");
             return;
         }
-//        try{
+        Log.d("LAnimaObject","onStart");
+        isRunning = true;
+        try{
             if(objectAnimator==null){
                 if (processListener!=null){
                     processListener.onPrepare(name,what,this);
                 }
-                if(animaBens.size()<2)//如果小于2个坐标,则添加一个当前坐标的点
-                    animaBens.add(0,new LAnimaBean());
+                if(animaBens.size()<2){//如果小于2个坐标,则添加一个当前坐标的点
+                    if (processListener!=null)
+                        processListener.onError(name,what,LAnimaObject.this,new AnimationException("AnimaBeans 的数量必须>1 .",LAnimaObject.class));
+                    else
+                        throw new AnimationException("AnimaBeans 的数量必须>1 .",LAnimaObject.class);
+                }
                 if(practitioners==null){
                     if (processListener!=null)
                         processListener.onError(name,what,LAnimaObject.this,new AnimationException("LPractitioners is null.(执行者不存在,请为动画任务分配执行者)",LAnimaObject.class));
                     else
                         throw new AnimationException("LPractitioners is null.(执行者不存在,请为动画任务分配执行者)",LAnimaObject.class);
                 }
-                Log.d("LAnimaObject","准备创建ObjectAnimator");
-                objectAnimator = ObjectAnimator.ofObject(LAnimaObject.this,"animation",evaluator,animaBens.toArray());
-                Log.d("LAnimaObject","创建ObjectAnimator完毕");
+                objectAnimator = ObjectAnimator.ofObject(practitioners,practitioners.getPropertyName(),evaluator,animaBens.toArray());
                 objectAnimator.setDuration(duration);
-                Log.d("LAnimaObject","设置ObjectAnimator时间");
                 objectAnimator.addListener(new LAnimaListener());
-                Log.d("LAnimaObject","设置ObjectAnimator监听器");
+                setRepeatType();
             }
             objectAnimator.start();
-            Log.d("LAnimaObject","ObjectAnimator开始执行");
-//        }catch (Exception e){
-//            if (processListener!=null){
-//                processListener.onError(name,what,LAnimaObject.this,new AnimationException("LAnimaObject--->"+e.getMessage()));
-//            }else{
-//                throw new AnimationException("LAnimaObject--->"+e.getMessage());
-//            }
-//        }
+            Log.d("LAnimaObject","开始动画");
+        }catch (Exception e){
+            isRunning = false;
+            if (processListener!=null){
+                processListener.onError(name,what,LAnimaObject.this,new AnimationException("LAnimaObject--->"+e.getMessage()));
+            }else{
+                throw new AnimationException("LAnimaObject--->"+e.getMessage());
+            }
+        }
     }
+
 
     public long getDuration() {
         return duration;
@@ -80,8 +92,50 @@ public class LAnimaObject extends LAnima {
         this.duration = duration;
     }
 
-    public void setAnimation(LAnimaBean bean){
-        practitioners.perform(view,bean);
+    public RepeatType getRepeatType() {
+        return repeatType;
+    }
+
+    public void setRepeatType(RepeatType repeatType) {
+        this.repeatType = repeatType;
+        setRepeatType();
+    }
+
+    private void setRepeatType(){
+        if(objectAnimator!=null){
+            switch (repeatType){
+                case RESTART://顺序重复
+                    objectAnimator.setRepeatMode(ValueAnimator.RESTART);
+                    objectAnimator.setRepeatCount(repeatCount);
+                    break;
+                case REVERSE://倒序重复
+                    objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
+                    objectAnimator.setRepeatCount(repeatCount);
+                    break;
+                case INFINITE_RESTART:
+                    objectAnimator.setRepeatMode(ValueAnimator.RESTART);
+                    objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
+                    repeatCount = -1;
+                    break;
+                case INFINITE_REVERSE:
+                    objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
+                    objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
+                    repeatCount = -1;
+                    break;
+            }
+        }
+    }
+
+    public int getRepeatCount() {
+        return repeatCount;
+    }
+
+    public void setRepeatCount(int repeatCount) {
+        this.repeatCount = repeatCount;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 
     public LAnimaObject() {
@@ -92,8 +146,10 @@ public class LAnimaObject extends LAnima {
         return view;
     }
 
-    public void setView(Object view) {
+    public void setView(V view) {
         this.view = view;
+        if(practitioners!=null)
+            practitioners.setView(view);
     }
 
     public LEvaluator getEvaluator() {
@@ -112,12 +168,10 @@ public class LAnimaObject extends LAnima {
         this.practitioners = practitioners;
     }
 
-    public static LAnimaObject create(Object view){
-        LAnimaObject lAnimaObject = new LAnimaObject();
-        lAnimaObject.setEvaluator(new LDefaultEvaluator());
-        lAnimaObject.setView(view);
-        lAnimaObject.setPractitioners(new LDefaultPractitioners());
-        return lAnimaObject;
+    public void create(V view){
+        setEvaluator(new LDefaultEvaluator());
+        setPractitioners(new LDefaultPractitioners());
+        setView(view);
     }
 
     /**
@@ -128,7 +182,7 @@ public class LAnimaObject extends LAnima {
      * @param bean
      */
     @Override
-    public void add(LAnimaBean bean){
+    public void add(T bean){
         animaBens.add(bean);
     }
     /**
@@ -139,7 +193,7 @@ public class LAnimaObject extends LAnima {
      * @param builder
      */
     @Override
-    public void add(BeanBuilder builder){
+    public void add(BeanBuilder<T> builder){
         add(builder.getBean());
     }
 
@@ -150,6 +204,19 @@ public class LAnimaObject extends LAnima {
     @Override
     public void addListener(LProcessListener processListener) {
         this.processListener = processListener;
+    }
+
+    /**
+     * 停止动画，仅仅停止已运行的状态
+     */
+    @Override
+    public void cancel() {
+        if(objectAnimator!=null){
+            objectAnimator.cancel();
+            objectAnimator.end();
+            Log.d("LAnimaObject","停止动画");
+        }
+        isRunning = false;
     }
 
     private class LAnimaListener implements Animator.AnimatorListener{

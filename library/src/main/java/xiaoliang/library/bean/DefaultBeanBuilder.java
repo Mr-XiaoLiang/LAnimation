@@ -14,6 +14,7 @@ public abstract class DefaultBeanBuilder implements BeanBuilder<LDefaultBean>{
 
     public DefaultBeanBuilder() {
         build = new LDefaultBean.Build();
+        make(build);
     }
 
     /**
@@ -30,6 +31,7 @@ public abstract class DefaultBeanBuilder implements BeanBuilder<LDefaultBean>{
     }
     @Override
     public LDefaultBean getBean(){
+        build();
         return defaultBean;
     }
 

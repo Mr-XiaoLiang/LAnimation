@@ -2,6 +2,8 @@ package xiaoliang.library.bean;
 
 import android.graphics.Color;
 
+import xiaoliang.library.listener.LProgressListener;
+
 /**
  * Created by LiuJ on 2016/8/31.
  * 缺省默认的关键帧
@@ -16,7 +18,7 @@ public class LDefaultBean extends LAnimaBean {
     public final int y;//纵向坐标增量
     public final float width;//宽度比例
     public final float height;// 高度增量
-    public final int color;// 目标颜色
+    public final Integer color;// 目标颜色
     public final float rotate;//旋转角度
     public final String name;// 关键帧名称
     public final int what;//关键帧标签
@@ -44,6 +46,7 @@ public class LDefaultBean extends LAnimaBean {
         this.y2 = build.y2;
         this.width = build.width;
         this.speedType = build.speedType;
+        setProgressListener(build.progressListener);
     }
 
     public int getAnimaType() {
@@ -65,13 +68,14 @@ public class LDefaultBean extends LAnimaBean {
         private int y1 = 0;//纵向坐标辅助增量
         private int x2 = 0;// 横向坐标辅助增量
         private int y2 = 0;//纵向坐标辅助增量
-        private float width = 0;//宽度比例
-        private float height = 0;// 高度比例
-        private int color = Color.WHITE;// 目标颜色
+        private float width = 1;//宽度比例
+        private float height = 1;// 高度比例
+        private Integer color = null;// 目标颜色
         private float rotate= 0;//旋转角度
         private String name = getClass().toString();// 关键帧名称
         private int what = 0;//关键帧标签
         private Object tag = null;//标签
+        private LProgressListener progressListener;//进度监听器
 
         public Build setAnimaType(AnimaType animaType) {
             this.animaType = animaType;
@@ -169,6 +173,15 @@ public class LDefaultBean extends LAnimaBean {
 
         public Build setSpeedType(SpeedType speedType) {
             this.speedType = speedType;
+            return this;
+        }
+
+        public LProgressListener getProgressListener() {
+            return progressListener;
+        }
+
+        public Build setProgressListener(LProgressListener progressListener) {
+            this.progressListener = progressListener;
             return this;
         }
     }

@@ -10,12 +10,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <View
+        <ImageView
             android:id="@+id/rotate_view"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:background="#f00" />
+            android:src="@mipmap/ic_launcher" />
 
         <Button
             android:id="@+id/rotate_btn"
@@ -24,7 +24,7 @@
             android:layout_marginTop="30dp"
             android:onClick="onClick"
             android:padding="20dp"
-            android:text="手动旋转30度" />
+            android:text="翻面" />
 
         <Button
             android:id="@+id/rotate_btn2"

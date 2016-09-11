@@ -42,4 +42,9 @@ public abstract class LAnima<T extends LAnimaBean> {
      */
     public abstract void addListener(LProcessListener processListener);
 
+    /**
+     * 停止动画
+     */
+    public abstract void cancel();
+
 }

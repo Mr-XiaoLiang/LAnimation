@@ -1,8 +1,11 @@
 package xiaoliang.library;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import xiaoliang.library.bean.LDefaultBean;
 import xiaoliang.library.object.LAnimaObject;
 
 /**
@@ -41,8 +44,10 @@ public class LAnimation {
      * @param v 操作对象
      * @return 任务
      */
-    public static LAnimaObject createLAnimaObject(Object v){
-        return LAnimaObject.create(v);
+    public static LAnimaObject createLAnimaObject(View v){
+        LAnimaObject<LDefaultBean,View> lAnimaObject = new LAnimaObject<>();
+        lAnimaObject.create(v);
+        return lAnimaObject;
     }
 
 }

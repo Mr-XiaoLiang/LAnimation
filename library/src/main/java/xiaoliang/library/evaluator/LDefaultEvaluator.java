@@ -43,19 +43,21 @@ public class LDefaultEvaluator implements LEvaluator<LDefaultBean> {
                 break;
         }
         build.moveTo(x,y);
-        //颜色变化
-        a = (int) ((Color.alpha(startValue.color)-Color.alpha(endValue.color))*fraction+Color.alpha(startValue.color));
-        r = (int) ((Color.red(startValue.color)-Color.red(endValue.color))*fraction+Color.red(startValue.color));
-        g = (int) ((Color.green(startValue.color)-Color.green(endValue.color))*fraction+Color.green(startValue.color));
-        b = (int) ((Color.blue(startValue.color)-Color.blue(endValue.color))*fraction+Color.blue(startValue.color));
-        build.setColor(Color.argb(a,r,g,b));
+        if(endValue.color!=null&&startValue.color!=null){
+            //颜色变化
+            a = (int) ((Color.alpha(startValue.color)-Color.alpha(endValue.color))*fraction+Color.alpha(startValue.color));
+            r = (int) ((Color.red(startValue.color)-Color.red(endValue.color))*fraction+Color.red(startValue.color));
+            g = (int) ((Color.green(startValue.color)-Color.green(endValue.color))*fraction+Color.green(startValue.color));
+            b = (int) ((Color.blue(startValue.color)-Color.blue(endValue.color))*fraction+Color.blue(startValue.color));
+            build.setColor(Color.argb(a,r,g,b));
+        }
         //尺寸变化
-        width = (startValue.width-endValue.width)*fraction+startValue.width;
-        height = (startValue.height-endValue.height)*fraction+startValue.height;
+        width = (endValue.width-startValue.width)*fraction+startValue.width;
+        height = (endValue.height-startValue.height)*fraction+startValue.height;
         build.setWidth(width);
         build.setHeight(height);
         //旋转角度
-        rotate = (startValue.rotate-endValue.rotate)*fraction+startValue.rotate;
+        rotate = (endValue.rotate-startValue.rotate)*fraction+startValue.rotate;
         build.setRotate(rotate);
         return new LDefaultBean(build);
     }
